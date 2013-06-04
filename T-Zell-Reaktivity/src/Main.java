@@ -8,7 +8,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		System.loadLibrary("modshogun");
 		modshogun.init_shogun_with_defaults();
-		System.out.println("Now working?");
+		System.out.println("Now working? Really?");
 	}
 
 }
