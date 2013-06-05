@@ -12,14 +12,14 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// initialisieren
+		// shogun initialisieren
 		System.loadLibrary("modshogun");
 		modshogun.init_shogun_with_defaults();
 		
 		// Lese die EncodingDB ein
 		AAEncodingFileReader aa = new AAEncodingFileReader();
 		
-		AAEncodingDatabase db = aa.readAAEncodings("/home/johannesheidrich/AAEncodings.txt");
+		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings.txt");
 		System.out.println("Database size: " + db.getEncodingDatabase().size());
 		
 		// Teste die Transcodierung
