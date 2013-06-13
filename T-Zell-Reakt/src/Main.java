@@ -1,4 +1,4 @@
-import org.shogun.modshogun;
+//import org.shogun.modshogun;
 public class Main {
 
 	/**
@@ -6,8 +6,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.loadLibrary("modshogun");
-		modshogun.init_shogun_with_defaults();
+		//System.loadLibrary("modshogun");
+		//modshogun.init_shogun_with_defaults();
 	}
 
 }
