@@ -7,7 +7,8 @@ public class ARFFComponent
 	
 	public ARFFComponent()
 	{
-		
+		this.aaIndices = new Double[9];
+		this.peptideSequence = "         ";
 	}
 	
 	public ARFFComponent(String pepSeq, Double[] aaI)
