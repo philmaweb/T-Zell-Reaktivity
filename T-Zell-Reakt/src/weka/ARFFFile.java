@@ -45,7 +45,7 @@ public class ARFFFile
 			// Anzal der Attribute einer Instance aus Instances entspricht den zuvor festgelegten Parametern
 			double[] values = new double[dataSet.numAttributes()];
 			
-			// ... fülle mit 1-Letter-Code der Peptidsequen
+			// ... fülle mit 1-Letter-Code der Peptidsequenz
 			values[0] = dataSet.attribute(0).addStringValue(ARFFComponents.get(a).getPeptideSequence());
 			
 			// ... fülle mit den AAIndices die für diese Peptidsequenz ermittelt wurden
