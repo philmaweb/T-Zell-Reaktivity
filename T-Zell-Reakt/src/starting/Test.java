@@ -8,11 +8,9 @@ import aaEncoding.AAEncodingDatabase;
 import aaEncoding.AAEncodingFileReader;
 import weka.ARFFComponent;
 import weka.ARFFFile;
-import weka.core.Attribute;
-import weka.core.Instances;
+
 // Weka
-import weka.core.Instance;
-import weka.classifiers.*;
+import weka.core.Instances;
 
 
 public class Test {
