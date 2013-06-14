@@ -22,4 +22,11 @@ public class AAEncodingDatabase
 		this.encodingDatabase.add(newEncoding);
 	}
 	
+	public int size(){
+		return this.encodingDatabase.size();
+	}
+	
+	public AAEncoding get(int i){
+		return this.encodingDatabase.get(i);
+	}
 }
