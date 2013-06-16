@@ -1,5 +1,7 @@
 package aaEncoding;
 
+import java.util.ArrayList;
+
 public class AAEncoder 
 {
 	private AAEncoding encodingType;
@@ -11,101 +13,103 @@ public class AAEncoder
 	 * @param target Die zu codierende Peptidsequenz der Länge 9 als String in Einbuchstaben-Codierung
 	 * @return Double[] das jeder Aminosäure einen Wert zugewiesen hat
 	 */
-	public Double[] getEncodedString(AAEncoding enc, String target)
+	public Double[][] getEncodedString(ArrayList<AAEncoding> enc, String target)
 	{
-		this.encodingType = enc;
-		
-		Double[] result = new Double[iPeptideLength];
+		Double[][] result = new Double[enc.size()][iPeptideLength];
 		
 		// beginne mit Preprocessing des Strings 
 		char[] preprocessedString = preprocessString(target);
 		
-		for (int i = 0; i < iPeptideLength; i++)
+		for (int e = 0; e < enc.size(); e++)
 		{
-			switch (preprocessedString[i])
+			this.encodingType = enc.get(e);
+			
+			for (int i = 0; i < iPeptideLength; i++)
 			{
-				case 'A':
-					result[i] = this.encodingType.getEncodingValues()[0];
-					break;
-				
-				case 'R':
-					result[i] = this.encodingType.getEncodingValues()[1];
-					break;
+				switch (preprocessedString[i])
+				{
+					case 'A':
+						result[e][i] = this.encodingType.getEncodingValues()[0];
+						break;
 					
-				case 'N':
-					result[i] = this.encodingType.getEncodingValues()[2];
-					break;
-					
-				case 'D':
-					result[i] = this.encodingType.getEncodingValues()[3];
-					break;
-					
-				case 'C':
-					result[i] = this.encodingType.getEncodingValues()[4];
-					break;
-					
-				case 'Q':
-					result[i] = this.encodingType.getEncodingValues()[5];
-					break;
-					
-				case 'E':
-					result[i] = this.encodingType.getEncodingValues()[6];
-					break;
-					
-				case 'G':
-					result[i] = this.encodingType.getEncodingValues()[7];
-					break;
-					
-				case 'H':
-					result[i] = this.encodingType.getEncodingValues()[8];
-					break;
-					
-				case 'I':
-					result[i] = this.encodingType.getEncodingValues()[9];
-					break;
-					
-				case 'L':
-					result[i] = this.encodingType.getEncodingValues()[10];
-					break;
-					
-				case 'K':
-					result[i] = this.encodingType.getEncodingValues()[11];
-					break;
-					
-				case 'M':
-					result[i] = this.encodingType.getEncodingValues()[12];
-					break;
-					
-				case 'F':
-					result[i] = this.encodingType.getEncodingValues()[13];
-					break;
-					
-				case 'P':
-					result[i] = this.encodingType.getEncodingValues()[14];
-					break;
-					
-				case 'S':
-					result[i] = this.encodingType.getEncodingValues()[15];
-					break;
-					
-				case 'T':
-					result[i] = this.encodingType.getEncodingValues()[16];
-					break;
-					
-				case 'W':
-					result[i] = this.encodingType.getEncodingValues()[17];
-					break;
-					
-				case 'Y':
-					result[i] = this.encodingType.getEncodingValues()[18];
-					break;
-					
-				case 'V':
-					result[i] = this.encodingType.getEncodingValues()[19];
-					break;
+					case 'R':
+						result[e][i] = this.encodingType.getEncodingValues()[1];
+						break;
+						
+					case 'N':
+						result[e][i] = this.encodingType.getEncodingValues()[2];
+						break;
+						
+					case 'D':
+						result[e][i] = this.encodingType.getEncodingValues()[3];
+						break;
+						
+					case 'C':
+						result[e][i] = this.encodingType.getEncodingValues()[4];
+						break;
+						
+					case 'Q':
+						result[e][i] = this.encodingType.getEncodingValues()[5];
+						break;
+						
+					case 'E':
+						result[e][i] = this.encodingType.getEncodingValues()[6];
+						break;
+						
+					case 'G':
+						result[e][i] = this.encodingType.getEncodingValues()[7];
+						break;
+						
+					case 'H':
+						result[e][i] = this.encodingType.getEncodingValues()[8];
+						break;
+						
+					case 'I':
+						result[e][i] = this.encodingType.getEncodingValues()[9];
+						break;
+						
+					case 'L':
+						result[e][i] = this.encodingType.getEncodingValues()[10];
+						break;
+						
+					case 'K':
+						result[e][i] = this.encodingType.getEncodingValues()[11];
+						break;
+						
+					case 'M':
+						result[e][i] = this.encodingType.getEncodingValues()[12];
+						break;
+						
+					case 'F':
+						result[e][i] = this.encodingType.getEncodingValues()[13];
+						break;
+						
+					case 'P':
+						result[e][i] = this.encodingType.getEncodingValues()[14];
+						break;
+						
+					case 'S':
+						result[e][i] = this.encodingType.getEncodingValues()[15];
+						break;
+						
+					case 'T':
+						result[e][i] = this.encodingType.getEncodingValues()[16];
+						break;
+						
+					case 'W':
+						result[e][i] = this.encodingType.getEncodingValues()[17];
+						break;
+						
+					case 'Y':
+						result[e][i] = this.encodingType.getEncodingValues()[18];
+						break;
+						
+					case 'V':
+						result[e][i] = this.encodingType.getEncodingValues()[19];
+						break;
+				}
 			}
 		}
-		
 		
 		return result;
 	}

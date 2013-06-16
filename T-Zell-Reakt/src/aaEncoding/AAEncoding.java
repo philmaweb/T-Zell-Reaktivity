@@ -18,7 +18,7 @@ public class AAEncoding implements IAAEncoding
 		this.description = "";
 		this.encodingValues = new Double[20];
 	}
-	
+
 	public String getEncodingID() 
 	{
 		return encodingID;

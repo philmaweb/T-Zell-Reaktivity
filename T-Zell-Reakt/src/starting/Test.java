@@ -1,9 +1,12 @@
 package starting;
 
 // Feature-Set Klassen
+import io.ExampleReader;
+
 import java.util.ArrayList;
 
 import aaEncoding.AAEncoder;
+import aaEncoding.AAEncoding;
 import aaEncoding.AAEncodingDatabase;
 import aaEncoding.AAEncodingFileReader;
 import weka.ARFFComponent;
@@ -32,29 +35,57 @@ public class Test {
 		AAEncoder encoder = new AAEncoder();
 		//ARNDCQEGHILKMFPSTWYV
 		String peptideSequence = "KMFPSTWYV";
-		Double[] encValues = encoder.getEncodedString(db.getEncodingDatabase().get(0), peptideSequence);
-		for (int i = 0; i < 9; i++)
+		
+		// wähle ein paar Encodings aus
+		ArrayList<AAEncoding> selectedEncodings = new ArrayList<AAEncoding>();
+		selectedEncodings.add(db.getEncodingDatabase().get(0));
+		selectedEncodings.add(db.getEncodingDatabase().get(1));
+		selectedEncodings.add(db.getEncodingDatabase().get(2));
+		
+		Double[][] encValues = encoder.getEncodedString(selectedEncodings, peptideSequence);
+		for (int e = 0; e < selectedEncodings.size(); e++)
 		{
-			System.out.print(encValues[i] + " ");
+			for (int i = 0; i < 9; i++)
+			{
+				System.out.print(encValues[e][i] + "\t");
+			}
+			System.out.println();
 		}
-		System.out.println("\n\nTestausgabe von WEKA Arbeiten:\n");
+
+		/*
+		 * Versuche mit IO
+		 */
+		
+		// Lese Binder/Nichtbinder ein
+		ExampleReader exampleReader = new ExampleReader();
+		ArrayList<String> binderPeptides = exampleReader.getSequnces("data/positive.txt");
+		ArrayList<String> nonbinderPeptides = exampleReader.getSequnces("data/negative.txt");
+		
+		System.out.println("\npositives\tnegatives");
+		System.out.println("---------\t---------\n");
+		for (int i = 0; i < binderPeptides.size(); i ++)
+		{
+			System.out.println(binderPeptides.get(i)  + "\t" + nonbinderPeptides.get(i));
+		}
 		
 		/*
 		 * Versuche mit WEKA
 		 */
+		System.out.println("\n\nTestausgabe von WEKA Arbeiten:\n");
+		
 		ARFFFile arffFile = new ARFFFile();
 		
 		// generiere für ein paar Peptidsequenzen ein Dataset	
 		ArrayList<ARFFComponent> komponenten = new ArrayList<ARFFComponent>();
 		
 		String peptide = "KMFPSTWYV";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(db.getEncodingDatabase().get(0), peptide)));
+		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
 	
 		peptide = "ARNDCQEGH";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(db.getEncodingDatabase().get(0), peptide)));
+		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
 		
 		peptide = "EGHILKMFP";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(db.getEncodingDatabase().get(0), peptide)));
+		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
 		
 		Instances dataSet = arffFile.createInstances(komponenten);
 		
