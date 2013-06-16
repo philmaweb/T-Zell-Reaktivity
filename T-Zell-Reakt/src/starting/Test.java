@@ -60,6 +60,12 @@ public class Test {
 		
 		System.out.println(dataSet);
 		
+		// LibSVM
+		weka.classifiers.functions.LibSVM libSVM = new weka.classifiers.functions.LibSVM();
+		
+		// GridSearch
+		weka.classifiers.meta.GridSearch gridSearch = new weka.classifiers.meta.GridSearch();
+		
 	}
 
 }
