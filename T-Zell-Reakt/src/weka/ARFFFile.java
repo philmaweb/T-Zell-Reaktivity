@@ -11,6 +11,13 @@ public class ARFFFile
 {
 	private int dimensions;
 	
+	/**
+	 * Methode um ein Template für eine Instanz anzulegen. Dieser FastVektor enthält die Informationen für
+	 * das codierte Peptid in 1-Letter-Code sowie der Dimension entsprechende Stellen für Codierungswerte.
+	 * Da all unsere Peptide die Länge 9 haben, entspricht die Vektorenlänge V = 9 * #Endodings
+	 * @param dim Die Anzahl der zuverwendenden Codierungen
+	 * @return FastVektor der Sequenz und den Codierungen
+	 */
 	private FastVector createFastVectorTemplate(int dim)
 	{
 		this.dimensions = dim;
@@ -18,9 +25,6 @@ public class ARFFFile
 		// Lege neue Attribute an
 		FastVector attributes = new FastVector();
 		
-		/*
-		 * ELEMENT 1
-		 */
 		// Das erste Attribut ist die Peptidsequenz
 		FastVector sequence = new FastVector();
 		sequence.addElement("PeptidSequenz");
@@ -33,6 +37,9 @@ public class ARFFFile
 		{
 			attributes.addElement(new Attribute("AA" + i));
 		}
+		
+		// füge das Attribut für Z-Zell aktivierend hinzu
+		attributes.addElement(new Attribute("activator"));
 		
 		// gib Attribute zurück
 		return attributes;
@@ -58,6 +65,9 @@ public class ARFFFile
 			{
 				values[i] = aRFFComponents.get(a).getAaIndices()[i-1];
 			}
+			
+			// Setze Wert für Binder/Nicht-Binder
+			values[dataSet.numAttributes()-1] = aRFFComponents.get(a).getBinder();
 			
 			// füge den Instances (= Dataset) eine Instance (= Dateneintrag) hinzu, Gewichtung 1.0
 			dataSet.add(new Instance(1.0, values));
