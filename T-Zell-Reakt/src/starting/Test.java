@@ -39,8 +39,8 @@ public class Test {
 		// wähle ein paar Encodings aus
 		ArrayList<AAEncoding> selectedEncodings = new ArrayList<AAEncoding>();
 		selectedEncodings.add(db.getEncodingDatabase().get(0));
-		selectedEncodings.add(db.getEncodingDatabase().get(1));
-		selectedEncodings.add(db.getEncodingDatabase().get(2));
+		//selectedEncodings.add(db.getEncodingDatabase().get(1));
+		//selectedEncodings.add(db.getEncodingDatabase().get(2));
 		
 		Double[][] encValues = encoder.getEncodedString(selectedEncodings, peptideSequence);
 		for (int e = 0; e < selectedEncodings.size(); e++)
@@ -78,14 +78,12 @@ public class Test {
 		// generiere für ein paar Peptidsequenzen ein Dataset	
 		ArrayList<ARFFComponent> komponenten = new ArrayList<ARFFComponent>();
 		
-		String peptide = "KMFPSTWYV";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
-	
-		peptide = "ARNDCQEGH";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
-		
-		peptide = "EGHILKMFP";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
+
+		for (int i = 0; i < nonbinderPeptides.size(); i++)
+		{
+			String peptide = binderPeptides.get(i);
+			komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide), false));
+		}
 		
 		Instances dataSet = arffFile.createInstances(komponenten);
 		

@@ -7,33 +7,29 @@ import aaEncoding.AAEncodingDatabase;
 
 public class DataSplit {
 
-	private AAEncodingDatabase database =  new AAEncodingDatabase();
-	private ArrayList<AAEncoding> testSet = new ArrayList<AAEncoding>();
-	private ArrayList<AAEncoding> trainingSet = new ArrayList<AAEncoding>();
+	private ArrayList<String> ninemereDatabase;
+	private ArrayList<ArrayList<String>> dataSet;
 	
-	public DataSplit(AAEncodingDatabase aadatabase, int k){
-		this.database = aadatabase;
+	public DataSplit(ArrayList<String> ninemeres, int k){
+		this.ninemereDatabase = ninemeres;
 		splitData(k);
 	}
 	
 	private void splitData(int k){
-		for(int i = 0; i < database.size(); i++){
-			if((i%k) == 0)
-				testSet.add(database.get(i));
-			else
-				trainingSet.add(database.get(i));
+		RandomNumberGenerator rNG = new RandomNumberGenerator();
+		System.out.println();
+		
+		for(int i = 0; i < ninemereDatabase.size(); i++)
+		{
+			int random = rNG.getRandom();
+			dataSet.get(random%k).add(ninemereDatabase.get(i));
 		}
 		return;
 	}
 	
-	public ArrayList<AAEncoding> getTestSet()
+	public ArrayList<ArrayList<String>> getDataSet()
 	{
-		return this.testSet;
-	}
-	
-	public ArrayList<AAEncoding> getTrainingSet()
-	{
-		return this.trainingSet;
+		return this.dataSet;
 	}
 	
 }

@@ -18,9 +18,6 @@ public class ARFFFile
 		// Lege neue Attribute an
 		FastVector attributes = new FastVector();
 		
-		/*
-		 * ELEMENT 1
-		 */
 		// Das erste Attribut ist die Peptidsequenz
 		FastVector sequence = new FastVector();
 		sequence.addElement("PeptidSequenz");
@@ -33,7 +30,13 @@ public class ARFFFile
 		{
 			attributes.addElement(new Attribute("AA" + i));
 		}
+		// füge das Attribut für Z-Zell aktivierend hinzu
+		FastVector activatorFV = new FastVector();
+		activatorFV.addElement("0");
+		activatorFV.addElement("1");
 		
+		attributes.addElement(new Attribute("activator", activatorFV));
+
 		// gib Attribute zurück
 		return attributes;
 	}
@@ -58,6 +61,8 @@ public class ARFFFile
 			{
 				values[i] = aRFFComponents.get(a).getAaIndices()[i-1];
 			}
+			// Setze Wert für Binder/Nicht-Binder
+			values[dataSet.numAttributes()-1] = aRFFComponents.get(a).getBinder();
 			
 			// füge den Instances (= Dataset) eine Instance (= Dateneintrag) hinzu, Gewichtung 1.0
 			dataSet.add(new Instance(1.0, values));

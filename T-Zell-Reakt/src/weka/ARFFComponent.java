@@ -4,6 +4,7 @@ public class ARFFComponent
 {
 	private Double[] aaIndices;
 	private String peptideSequence;
+	private int binder;
 	private int dim;
 	
 	public ARFFComponent(int dimensions)
@@ -13,8 +14,17 @@ public class ARFFComponent
 		this.peptideSequence = "";
 	}
 	
-	public ARFFComponent(String pepSeq, Double[][] aaI)
+	public ARFFComponent(String pepSeq, Double[][] aaI, boolean activator)
 	{
+		// Codiere die Eigenschaft ob T-Zell-Aktivierend mit 1 oder 0 da innerhalb von ARFF alles als Zahl codiert ist
+		if (activator)
+		{
+				binder = 1;
+		}
+		else
+		{
+				binder = 0;
+		}
 		this.dim = aaI.length;
 		this.aaIndices = new Double[9 * this.dim];
 		// Die Codierungen werden spaltenweise in ein Array geschrieben
@@ -46,6 +56,14 @@ public class ARFFComponent
 
 	public void setDim(int dim) {
 		this.dim = dim;
+	}
+	
+	public int getBinder() {
+		return binder;
+	}
+
+	public void setBinder(int binder) {
+		this.binder = binder;
 	}
 	
 	public Double[] getAaIndices() 

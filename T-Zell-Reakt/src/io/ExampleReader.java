@@ -21,6 +21,8 @@ public class ExampleReader
 				result.add(currentLine);
 				currentLine = bufferedReader.readLine();
 			}
+			fileReader.close();
+			
 		}
 		catch (Exception ex)
 		{
