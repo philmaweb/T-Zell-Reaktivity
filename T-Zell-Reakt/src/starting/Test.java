@@ -10,7 +10,7 @@ import aaEncoding.AAEncoding;
 import aaEncoding.AAEncodingDatabase;
 import aaEncoding.AAEncodingFileReader;
 import weka.ARFFComponent;
-import weka.ARFFFile;
+import weka.ARFFDataSet;
 
 // Weka
 import weka.core.Instances;
@@ -73,7 +73,7 @@ public class Test {
 		 */
 		System.out.println("\n\nTestausgabe von WEKA Arbeiten:\n");
 		
-		ARFFFile arffFile = new ARFFFile();
+		ARFFDataSet arffFile = new ARFFDataSet();
 		
 		// generiere für ein paar Peptidsequenzen ein Dataset	
 		ArrayList<ARFFComponent> komponenten = new ArrayList<ARFFComponent>();

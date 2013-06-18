@@ -7,7 +7,7 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
-public class ARFFFile 
+public class ARFFDataSet 
 {
 	private int dimensions;
 	
