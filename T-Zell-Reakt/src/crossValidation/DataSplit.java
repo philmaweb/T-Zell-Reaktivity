@@ -2,9 +2,6 @@ package crossValidation;
 
 import java.util.ArrayList;
 
-import aaEncoding.AAEncoding;
-import aaEncoding.AAEncodingDatabase;
-
 public class DataSplit {
 
 	private ArrayList<String> ninemereDatabase;
@@ -15,7 +12,8 @@ public class DataSplit {
 		splitData(k);
 	}
 	
-	private void splitData(int k){
+	private void splitData(int k)
+	{
 		RandomNumberGenerator rNG = new RandomNumberGenerator();
 		System.out.println();
 		
@@ -24,7 +22,6 @@ public class DataSplit {
 			int random = rNG.getRandom();
 			dataSet.get(random%k).add(ninemereDatabase.get(i));
 		}
-		return;
 	}
 	
 	public ArrayList<ArrayList<String>> getDataSet()

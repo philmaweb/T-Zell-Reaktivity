@@ -89,8 +89,8 @@ public class Test {
 		
 		System.out.println(dataSet);
 		
-		// LibSVM
-		weka.classifiers.functions.LibSVM libSVM = new weka.classifiers.functions.LibSVM();
+		// Wir verwenden hier jetzt kein LibSVM, das dauert zu lange
+		weka.classifiers.functions.SMO sMO = new weka.classifiers.functions.SMO();
 		
 		// GridSearch
 		weka.classifiers.meta.GridSearch gridSearch = new weka.classifiers.meta.GridSearch();
