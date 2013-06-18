@@ -8,7 +8,7 @@ import weka.core.Instances;
 
 public class ARFFFileGenerator 
 {
-	public Instances createARFFFile (String fileName, ArrayList<String> activators, ArrayList<String> nonActivators, ArrayList<AAEncoding> selectedEncodings)
+	public Instances createARFFFile (ArrayList<String> activators, ArrayList<String> nonActivators, ArrayList<AAEncoding> selectedEncodings)
 	{
 		// Das eigentlich Datenset
 		ARFFDataSet arffFile = new ARFFDataSet();

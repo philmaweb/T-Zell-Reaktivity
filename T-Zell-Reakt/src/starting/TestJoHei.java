@@ -11,6 +11,7 @@ import aaEncoding.AAEncodingDatabase;
 import aaEncoding.AAEncodingFileReader;
 import weka.ARFFComponent;
 import weka.ARFFDataSet;
+import weka.ARFFFileGenerator;
 
 // Weka
 import weka.core.Instances;
@@ -73,19 +74,9 @@ public class TestJoHei {
 		 */
 		System.out.println("\n\nTestausgabe von WEKA Arbeiten:\n");
 		
-		ARFFDataSet arffFile = new ARFFDataSet();
-		
-		// generiere für ein paar Peptidsequenzen ein Dataset	
-		ArrayList<ARFFComponent> komponenten = new ArrayList<ARFFComponent>();
-		
+		ARFFFileGenerator arff = new ARFFFileGenerator();
 
-		for (int i = 0; i < nonbinderPeptides.size(); i++)
-		{
-			String peptide = binderPeptides.get(i);
-			komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide), false));
-		}
-		
-		Instances dataSet = arffFile.createInstances(komponenten);
+		Instances dataSet = arff.createARFFFile(binderPeptides, nonbinderPeptides, selectedEncodings);
 		
 		System.out.println(dataSet);
 		
