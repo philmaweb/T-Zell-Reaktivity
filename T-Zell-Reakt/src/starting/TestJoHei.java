@@ -16,7 +16,7 @@ import weka.ARFFDataSet;
 import weka.core.Instances;
 
 
-public class Test {
+public class TestJoHei {
 
 	/**
 	 * @param args
