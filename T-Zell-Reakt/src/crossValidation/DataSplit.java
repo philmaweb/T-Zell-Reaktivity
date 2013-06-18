@@ -7,7 +7,8 @@ public class DataSplit {
 	private ArrayList<String> ninemereDatabase;
 	private ArrayList<ArrayList<String>> dataSet;
 	
-	public DataSplit(ArrayList<String> ninemeres, int k){
+	public DataSplit(ArrayList<String> ninemeres, int k)
+	{
 		this.ninemereDatabase = ninemeres;
 		splitData(k);
 	}
