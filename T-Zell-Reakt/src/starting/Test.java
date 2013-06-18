@@ -79,13 +79,13 @@ public class Test {
 		ArrayList<ARFFComponent> komponenten = new ArrayList<ARFFComponent>();
 		
 		String peptide = "KMFPSTWYV";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide), true));
+		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
 	
 		peptide = "ARNDCQEGH";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide), false));
+		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
 		
 		peptide = "EGHILKMFP";
-		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide), true));
+		komponenten.add(new ARFFComponent(peptide, encoder.getEncodedString(selectedEncodings, peptide)));
 		
 		Instances dataSet = arffFile.createInstances(komponenten);
 		
