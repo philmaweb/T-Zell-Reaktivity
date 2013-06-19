@@ -1,6 +1,7 @@
 package crossValidation;
 
 import java.util.ArrayList;
+import java.util.*;
 
 public class DataSplit {
 
@@ -15,13 +16,11 @@ public class DataSplit {
 	
 	private void splitData(int k)
 	{
-		RandomNumberGenerator rNG = new RandomNumberGenerator();
-		System.out.println();
+		Collections.shuffle(ninemereDatabase);
 		
 		for(int i = 0; i < ninemereDatabase.size(); i++)
 		{
-			int random = rNG.getRandom();
-			dataSet.get(random%k).add(ninemereDatabase.get(i));
+			dataSet.get(i%k).add(ninemereDatabase.get(i));
 		}
 	}
 	

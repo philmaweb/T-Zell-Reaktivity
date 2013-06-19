@@ -40,8 +40,8 @@ public class TestJoHei {
 		// wähle ein paar Encodings aus
 		ArrayList<AAEncoding> selectedEncodings = new ArrayList<AAEncoding>();
 		selectedEncodings.add(db.getEncodingDatabase().get(0));
-		//selectedEncodings.add(db.getEncodingDatabase().get(1));
-		//selectedEncodings.add(db.getEncodingDatabase().get(2));
+		selectedEncodings.add(db.getEncodingDatabase().get(1));
+		selectedEncodings.add(db.getEncodingDatabase().get(2));
 		
 		Double[][] encValues = encoder.getEncodedString(selectedEncodings, peptideSequence);
 		for (int e = 0; e < selectedEncodings.size(); e++)
