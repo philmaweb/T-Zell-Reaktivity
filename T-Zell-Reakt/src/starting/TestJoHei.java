@@ -37,11 +37,11 @@ public class TestJoHei {
 		//ARNDCQEGHILKMFPSTWYV
 		String peptideSequence = "KMFPSTWYV";
 		
-		// wähle ein paar Encodings aus
+		// füge alle Encodings hinzu und schreibe in file
 		ArrayList<AAEncoding> selectedEncodings = new ArrayList<AAEncoding>();
-		selectedEncodings.add(db.getEncodingDatabase().get(0));
-		selectedEncodings.add(db.getEncodingDatabase().get(1));
-		selectedEncodings.add(db.getEncodingDatabase().get(2));
+		selectedEncodings.addAll(db.getEncodingDatabase());
+		
+		
 		
 		Double[][] encValues = encoder.getEncodedString(selectedEncodings, peptideSequence);
 		for (int e = 0; e < selectedEncodings.size(); e++)
@@ -77,6 +77,9 @@ public class TestJoHei {
 		ARFFFileGenerator arff = new ARFFFileGenerator();
 
 		Instances dataSet = arff.createARFFFile(binderPeptides, nonbinderPeptides, selectedEncodings);
+		
+		// schreibe ARFF Datei
+		arff.writeARFFFile("data/allEncodings.arff", dataSet);
 		
 		System.out.println(dataSet);
 		

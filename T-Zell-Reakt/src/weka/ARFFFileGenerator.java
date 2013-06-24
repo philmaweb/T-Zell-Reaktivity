@@ -1,5 +1,7 @@
 package weka;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 import aaEncoding.AAEncoder;
@@ -35,5 +37,20 @@ public class ARFFFileGenerator
 		}
 		
 		return arffFile.createInstances(komponenten);
+	}
+	
+	public void writeARFFFile (String fileName, Instances inst)
+	{
+		try
+		{
+			
+			FileWriter fWriter = new FileWriter(fileName);
+			fWriter.write(inst.toString());
+			fWriter.close();
+		}
+		catch (Exception ex)
+		{
+			System.err.println(ex);
+		}
 	}
 }
