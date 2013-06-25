@@ -5,6 +5,8 @@ import io.ExampleReader;
 
 import java.util.ArrayList;
 
+import crossValidation.DataSplit;
+
 import aaEncoding.AAEncoder;
 import aaEncoding.AAEncoding;
 import aaEncoding.AAEncodingDatabase;
@@ -12,6 +14,7 @@ import aaEncoding.AAEncodingFileReader;
 import weka.ARFFComponent;
 import weka.ARFFDataSet;
 import weka.ARFFFileGenerator;
+import weka.FeatureFilter;
 
 // Weka
 import weka.core.Instances;
@@ -70,6 +73,13 @@ public class TestJoHei {
 		}
 		
 		/*
+		 * Splitting Tests
+		 */
+		
+		//DataSplit dS = new DataSplit(binderPeptides, 6);
+		//ArrayList<ArrayList<String>> testDataSet = dS.getDataSet();
+		
+		/*
 		 * Versuche mit WEKA
 		 */
 		System.out.println("\n\nTestausgabe von WEKA Arbeiten:\n");
@@ -82,6 +92,18 @@ public class TestJoHei {
 		arff.writeARFFFile("data/allEncodings.arff", dataSet);
 		
 		System.out.println(dataSet);
+		
+		// Feature Filtering
+		dataSet.setClass(dataSet.attribute("activator"));
+		FeatureFilter fFilter = new FeatureFilter();
+		
+		System.out.println("\nFeature Ranking:\n");
+		int[] ranking = fFilter.rankFeatures(dataSet);
+		
+		for (int i = 0; i < ranking.length; i++)
+		{
+			System.out.println(ranking[i]);
+		}
 		
 		// Wir verwenden hier jetzt kein LibSVM, das dauert zu lange
 		weka.classifiers.functions.SMO sMO = new weka.classifiers.functions.SMO();
