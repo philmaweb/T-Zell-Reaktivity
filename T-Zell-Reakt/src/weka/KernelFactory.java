@@ -7,7 +7,7 @@ import configuration.Names.KernelTypes;
 
 public class KernelFactory 
 {
-	public static Kernel createKernel(KernelTypes kernelType) throws Exception
+	public static Kernel createKernel(KernelTypes kernelType)
 	{
 		switch (kernelType)
 		{
@@ -18,7 +18,8 @@ public class KernelFactory
 				return new PolyKernel();
 				
 			default:
-				throw new Exception("Kein gültiger Kernel ausgewählt!");
+				System.err.println("Kein gültiger Kernel ausgewählt!");
+				return null;
 		}
 	}
 }

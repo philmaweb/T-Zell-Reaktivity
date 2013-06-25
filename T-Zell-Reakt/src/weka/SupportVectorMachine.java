@@ -21,6 +21,9 @@ public class SupportVectorMachine
 		sMO.setNumFolds(this.numFolds);
 		sMO.setRandomSeed(this.randomSeed);
 		sMO.setToleranceParameter(this.toleranceParameter);
+		sMO.setC(c);
+		sMO.setEpsilon(epsilon);
+
 		
 		try 
 		{

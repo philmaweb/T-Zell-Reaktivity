@@ -17,11 +17,13 @@ import weka.ARFFFileGenerator;
 import weka.FeatureFilter;
 import weka.KernelFactory;
 
+import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.supportVector.Kernel;
 import weka.classifiers.functions.supportVector.RBFKernel;
 import weka.classifiers.meta.GridSearch;
 // Weka
 import weka.core.Instances;
+import weka.core.SelectedTag;
 
 import configuration.Names.KernelTypes;
 
@@ -80,8 +82,8 @@ public class TestJoHei {
 		 * Splitting Tests
 		 */
 		
-		//DataSplit dS = new DataSplit(binderPeptides, 6);
-		//ArrayList<ArrayList<String>> testDataSet = dS.getDataSet();
+		DataSplit dS = new DataSplit(binderPeptides, 6);
+		ArrayList<ArrayList<String>> testDataSet = dS.getDataSet();
 		
 		/*
 		 * Versuche mit WEKA
@@ -102,17 +104,20 @@ public class TestJoHei {
 		FeatureFilter fFilter = new FeatureFilter();
 		
 		System.out.println("\nFeature Ranking:\n");
-		int[] ranking = fFilter.rankFeatures(dataSet);
+		int[] ranking = fFilter.rankFeatures(dataSet, -1);
+		
 		
 		for (int i = 0; i < ranking.length; i++)
 		{
 			System.out.println(ranking[i]);
 		}
 		
+		System.out.println(fFilter.getProcessedInstances());
+		
+		
 		try
 		{
 			Kernel rbfKernel = KernelFactory.createKernel(KernelTypes.RBF_KERNEL);
-			
 			// GridSearch
 			GridSearch gridSearch = new GridSearch();
 		}

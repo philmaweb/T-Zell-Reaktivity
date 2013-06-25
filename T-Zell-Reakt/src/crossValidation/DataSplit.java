@@ -1,3 +1,4 @@
+
 package crossValidation;
 
 import java.util.ArrayList;
@@ -11,7 +12,17 @@ public class DataSplit {
 	public DataSplit(ArrayList<String> ninemeres, int k)
 	{
 		this.ninemereDatabase = ninemeres;
+		this.dataSet = new ArrayList<ArrayList<String>>(k);
+		initializeArray(k);
 		splitData(k);
+	}
+		
+	private void initializeArray(int k)
+	{
+		for(int i = 0; i < k; i++)
+		{
+			this.dataSet.add(new ArrayList<String>());
+		}
 	}
 	
 	private void splitData(int k)
@@ -20,7 +31,8 @@ public class DataSplit {
 		
 		for(int i = 0; i < ninemereDatabase.size(); i++)
 		{
-			dataSet.get(i%k).add(ninemereDatabase.get(i));
+			String add = ninemereDatabase.get(i);
+			(dataSet.get(i%k)).add(add);
 		}
 	}
 	
