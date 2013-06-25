@@ -15,17 +15,21 @@ import weka.ARFFComponent;
 import weka.ARFFDataSet;
 import weka.ARFFFileGenerator;
 import weka.FeatureFilter;
+import weka.KernelFactory;
 
+import weka.classifiers.functions.supportVector.Kernel;
+import weka.classifiers.functions.supportVector.RBFKernel;
+import weka.classifiers.meta.GridSearch;
 // Weka
 import weka.core.Instances;
+
+import configuration.Names.KernelTypes;
 
 
 public class TestJoHei {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) 
+
+	public static void main(String[] args)
 	{	
 		System.out.println("Testausgabe von AAEncodings");
 		
@@ -105,11 +109,19 @@ public class TestJoHei {
 			System.out.println(ranking[i]);
 		}
 		
-		// Wir verwenden hier jetzt kein LibSVM, das dauert zu lange
-		weka.classifiers.functions.SMO sMO = new weka.classifiers.functions.SMO();
+		try
+		{
+			Kernel rbfKernel = KernelFactory.createKernel(KernelTypes.RBF_KERNEL);
+			
+			// GridSearch
+			GridSearch gridSearch = new GridSearch();
+		}
+		catch (Exception ex)
+		{
+			System.err.println(ex);
+		}
 		
-		// GridSearch
-		weka.classifiers.meta.GridSearch gridSearch = new weka.classifiers.meta.GridSearch();
+		
 		
 	}
 
