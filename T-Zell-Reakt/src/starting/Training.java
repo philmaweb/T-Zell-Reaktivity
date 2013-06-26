@@ -2,12 +2,14 @@ package starting;
 
 import io.ExampleReader;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Date;
 
 import configuration.Names;
 
 import weka.ARFFFileGenerator;
+import weka.Evaluator;
 import weka.FeatureFilter;
 import weka.KernelFactory;
 import weka.ParameterOptimization;
@@ -16,8 +18,7 @@ import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.Kernel;
 import weka.classifiers.meta.GridSearch;
 import weka.core.Instances;
-import weka.core.SelectedTag;
-import weka.filters.AllFilter;
+
 
 import crossValidation.DataSplit;
 
@@ -34,6 +35,7 @@ public class Training
 	{
 		
 		Training training = new Training();
+		int numberOfAttributes = 9*5;
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
 		
@@ -67,8 +69,10 @@ public class Training
 		ArrayList<String> inner_List_neg = training.concatenateLists(list_negativ);
 			
 		/*
+		 * 
 		 * Ab hier nur noch Arbeiten mit innerer Liste, die Daten zum Evaluieren bekommt Weka vorerst 
 		 * nicht zu sehen!
+		 * 
 		 */
 		training.printMessage("Convertiere Daten ins Weka ARFF Format");		
 		// Convertiere Daten in Wekas File Format
@@ -80,7 +84,7 @@ public class Training
 		training.printMessage("Führe Feature Selection (Filtering) aus");
 		// Beginne Feature Selection
 		FeatureFilter featureFilter = new FeatureFilter();
-		featureFilter.rankFeatures(dataSet, 27);					// Wähle die x wichtigsten Features aus
+		featureFilter.rankFeatures(dataSet, numberOfAttributes);					// Wähle die x wichtigsten Features aus
 		dataSet = featureFilter.getProcessedInstances();
 		training.printMessage("Ausgewählte Features: " + featureFilter.getTopResults());
 		
@@ -93,13 +97,60 @@ public class Training
 		
 		ParameterOptimization optimizer = new ParameterOptimization();
 		GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet);
-		training.printMessage("Gefundene Parameter C und gamma: " + gridSearch.getValues()); // liefert unter diesen Settings 28.0 und -3.0
-		
-		
-		training.printMessage("Evaluiere die gefundenen Parameter gegen das äußere Datenset");
-		// hier folgt nun die Evaluation...
-		
+		training.printMessage("Gefundene Parameter [C, gamma]: " + gridSearch.getValues()); // liefert unter diesen Settings 1.0 und 0.0
+		Point2D bestParameters = (Point2D)gridSearch.getValues();							// speichert die besten Werte der GridSearch
 
+		// setze die Parameter des Kernels und der SVM anhand der optimalen aus der GridSearch
+		String[] kernelParameter = kernel.getOptions();
+		kernelParameter[3] = String.valueOf(Math.pow(10, bestParameters.getY()));
+		try 
+		{
+			kernel.setOptions(kernelParameter);
+		} 
+		catch (Exception ex) 
+		{
+			System.err.println("Fehler beim Einstellen der Kernelparameter" + ex);
+		}
+		
+		// Setze die Parameter der SVM
+		sMO.setC(bestParameters.getX());
+		
+		// Training der SVM mit gefundenen Parametern beginnen
+		training.printMessage("Beginne die SVM mit den optimalen Einstellungen zu trainieren");
+		try 
+		{
+			//Evaluation evaluation = new Evaluation(dataSet);
+			sMO.buildClassifier(dataSet);
+		} 
+		catch (Exception e) 
+		{
+			System.err.println("Fehler bei der Erzeugung des Modells: " + e);
+		}
+		
+		/*
+		 * 
+		 * Evaluationsbeginn 
+		 *
+		 */
+		training.printMessage("Evaluiere die Performance gegen das äußere Datenset");
+		training.printMessage("Transcodierung des Evaluationsdatensatzes");
+		arff = new ARFFFileGenerator();
+		dataSet = arff.createARFFFile(outer_List_pos, outer_List_neg, db.getEncodingDatabase());
+		dataSet.setClass(dataSet.attribute("activator"));			// Lege das nominale Attribut fest, wonach klassifiziert wird
+		dataSet.deleteStringAttributes(); 							// Entferne String-Attribute
+		
+		// Führe Feature-Filtering mit den Einstellungen der GridSearch aus
+		training.printMessage("Führe Feature Selection (Filtering) auf GridSearch-Basis aus");
+		// Beginne Feature Selection
+		featureFilter.processInstances(featureFilter.getRanking(), dataSet, numberOfAttributes);	 // Wähle die x wichtigsten Features aus
+		dataSet = featureFilter.getProcessedInstances();
+		
+		
+		
+		training.printMessage("Ermittle Performance");
+		Evaluator eval = new Evaluator();
+		eval.classifyDataSet(sMO, dataSet);
+		eval.printRawData();
 		
 		
 	}

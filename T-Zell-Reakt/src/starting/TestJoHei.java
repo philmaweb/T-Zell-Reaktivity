@@ -97,7 +97,7 @@ public class TestJoHei {
 		// schreibe ARFF Datei
 		arff.writeARFFFile("data/allEncodings_complete.arff", dataSet);
 		
-		System.out.println(dataSet);
+		//System.out.println(dataSet);
 		
 		// Feature Filtering
 		dataSet.setClass(dataSet.attribute("activator"));
@@ -109,10 +109,10 @@ public class TestJoHei {
 		
 		for (int i = 0; i < ranking.length; i++)
 		{
-			System.out.println(ranking[i]);
+			//System.out.println(ranking[i]);
 		}
 		
-		System.out.println(fFilter.getProcessedInstances());
+		//System.out.println(fFilter.getProcessedInstances());
 		
 		
 		try
@@ -120,6 +120,9 @@ public class TestJoHei {
 			Kernel rbfKernel = KernelFactory.createKernel(KernelTypes.RBF_KERNEL);
 			// GridSearch
 			GridSearch gridSearch = new GridSearch();
+			
+			for (int i = 0; i < rbfKernel.getOptions().length; i++)
+				System.out.println(rbfKernel.getOptions()[i]);
 		}
 		catch (Exception ex)
 		{

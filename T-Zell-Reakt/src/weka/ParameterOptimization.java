@@ -18,14 +18,14 @@ public class ParameterOptimization
 		gridSearch.setClassifier(sMO);
 		gridSearch.setXProperty("classifier.c");
 		gridSearch.setXMin(0);
-		gridSearch.setXMax(50);
-		gridSearch.setXStep(0.5);
+		gridSearch.setXMax(25);
+		gridSearch.setXStep(1);
 		gridSearch.setXExpression("I"); 							// I testet auf Parameter C
 		
 		gridSearch.setYProperty("classifier.kernel.gamma");
 		gridSearch.setYMin(-10);
 		gridSearch.setYMax(10);
-		gridSearch.setYStep(0.5);
+		gridSearch.setYStep(1);
 		gridSearch.setYBase(10);									// Testet den Parameter gamma also auf 10^-10, 10^-9, ... 10^10
 		gridSearch.setYExpression("pow(BASE,I)");					// Testet auf gamma
 			

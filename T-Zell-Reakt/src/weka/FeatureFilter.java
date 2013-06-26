@@ -11,6 +11,7 @@ public class FeatureFilter
 	private InfoGainAttributeEval infoGainAttributeEval;
 	private Ranker searchRanker;
 	private String stringRanking = "";
+	private int[] iRanking;
 	
 	public int[] rankFeatures(Instances instances, int numToSelect)
 	{
@@ -25,18 +26,18 @@ public class FeatureFilter
 		// Search Method
 		Ranker ranker = new Ranker();
 		ranker.setGenerateRanking(true);
-		ranker.setNumToSelect(-1);				// -1 gib gesamtes Ranking aus
+		ranker.setNumToSelect(-1);						// -1 gib gesamtes Ranking aus
 		ranker.setThreshold(-1.7976931348623157E308);	
 		
 		try
 		{
 			infoGain.buildEvaluator(instances);
-			int[] result = ranker.search(infoGain, instances);
+			this.iRanking = ranker.search(infoGain, instances);
 			this.infoGainAttributeEval = infoGain;
 			this.searchRanker = ranker;
-			processInstances(result, instances, numToSelect);
+			processInstances(this.iRanking, instances, numToSelect);
 			
-			return result;
+			return this.iRanking;
 		}
 		catch(Exception ex)
 		{
@@ -46,7 +47,7 @@ public class FeatureFilter
 		return null;		
 	}
 	
-	private void processInstances(int[] ranking, Instances instances, int k)
+	public void processInstances(int[] ranking, Instances instances, int k)
 	{
 		try
 		{
@@ -107,5 +108,10 @@ public class FeatureFilter
 	public String getTopResults()
 	{
 		return this.stringRanking;
+	}
+	
+	public int[] getRanking()
+	{
+		return this.iRanking;
 	}
 }

@@ -1,6 +1,5 @@
 package weka;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
@@ -43,7 +42,6 @@ public class ARFFFileGenerator
 	{
 		try
 		{
-			
 			FileWriter fWriter = new FileWriter(fileName);
 			fWriter.write(inst.toString());
 			fWriter.close();
