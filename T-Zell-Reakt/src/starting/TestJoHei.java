@@ -38,7 +38,7 @@ public class TestJoHei {
 		// Lese die EncodingDB ein
 		AAEncodingFileReader aa = new AAEncodingFileReader();
 		
-		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings.txt");
+		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings_complete.txt");
 		System.out.println("Database size: " + db.getEncodingDatabase().size());
 		
 		// Teste die Transcodierung
@@ -95,7 +95,7 @@ public class TestJoHei {
 		Instances dataSet = arff.createARFFFile(binderPeptides, nonbinderPeptides, selectedEncodings);
 		
 		// schreibe ARFF Datei
-		arff.writeARFFFile("data/allEncodings.arff", dataSet);
+		arff.writeARFFFile("data/allEncodings_complete.arff", dataSet);
 		
 		System.out.println(dataSet);
 		

@@ -26,9 +26,12 @@ public class ARFFDataSet
 		attributes.addElement(new Attribute("PeptidSequenz", (FastVector)null));
 		
 		// weitere Attribute sind dann Double
-		for (int i = 0; i < (9 * dimensions); i++)
+		for (int i = 0; i < 9; i++)
 		{
-			attributes.addElement(new Attribute("AA" + i));
+			for (int j = 0; j < dimensions; j++)
+			{
+				attributes.addElement(new Attribute("AA" + i + "_" + j));
+			}
 		}
 		// füge das Attribut für Z-Zell aktivierend hinzu
 		FastVector activatorFV = new FastVector();

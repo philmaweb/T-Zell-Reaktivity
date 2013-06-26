@@ -18,7 +18,7 @@ public class ParameterOptimization
 		gridSearch.setClassifier(sMO);
 		gridSearch.setXProperty("classifier.c");
 		gridSearch.setXMin(0);
-		gridSearch.setXMax(20);
+		gridSearch.setXMax(50);
 		gridSearch.setXStep(0.5);
 		gridSearch.setXExpression("I"); 							// I testet auf Parameter C
 		

@@ -2,7 +2,6 @@ package starting;
 
 import io.ExampleReader;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -41,7 +40,7 @@ public class Training
 		training.printMessage("Datenbank von Aminosäure-Codierungen wird eingelesen");
 		// Lies die EncodingDB ein
 		AAEncodingFileReader aa = new AAEncodingFileReader();
-		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings.txt");
+		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings_complete.txt");
 		
 		training.printMessage("Trainingsdatensatz wird eingelesen und prozessiert");
 		// Lies zunächst die gesamten Trainingsdaten ein
@@ -81,8 +80,9 @@ public class Training
 		training.printMessage("Führe Feature Selection (Filtering) aus");
 		// Beginne Feature Selection
 		FeatureFilter featureFilter = new FeatureFilter();
-		featureFilter.rankFeatures(dataSet, 20);					// Wähle die x wichtigsten Features aus
+		featureFilter.rankFeatures(dataSet, 27);					// Wähle die x wichtigsten Features aus
 		dataSet = featureFilter.getProcessedInstances();
+		training.printMessage("Ausgewählte Features: " + featureFilter.getTopResults());
 		
 		training.printMessage("Beginne Gridsearch");
 		// Gridsearch starten
@@ -93,6 +93,8 @@ public class Training
 		
 		ParameterOptimization optimizer = new ParameterOptimization();
 		GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet);
+		training.printMessage("Gefundene Parameter C und gamma: " + gridSearch.getValues()); // liefert unter diesen Settings 28.0 und -3.0
+		
 		
 		training.printMessage("Evaluiere die gefundenen Parameter gegen das äußere Datenset");
 		// hier folgt nun die Evaluation...
@@ -115,7 +117,7 @@ public class Training
 	private void printMessage(String string)
 	{
 		Date date = new Date();
-		System.out.println(date + ": " + string + "...");
+		System.out.println(date + ": " + string + " ...");
 	}
 
 }

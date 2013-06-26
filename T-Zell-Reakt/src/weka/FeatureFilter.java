@@ -7,9 +7,10 @@ import weka.filters.unsupervised.attribute.Remove;
 
 public class FeatureFilter 
 {
-	Instances processedInstances;
-	InfoGainAttributeEval infoGainAttributeEval;
-	Ranker	searchRanker;
+	private Instances processedInstances;
+	private InfoGainAttributeEval infoGainAttributeEval;
+	private Ranker searchRanker;
+	private String stringRanking = "";
 	
 	public int[] rankFeatures(Instances instances, int numToSelect)
 	{
@@ -51,7 +52,7 @@ public class FeatureFilter
 		{
 			// insbesondere nicht, wenn k = -1
 			if (k > 0)
-			{
+			{		
 				// Indices der Attribute, die als nicht wichtig erachtet werden
 				int[] indicesToRemove = new int[ranking.length - k];
 				
@@ -76,6 +77,11 @@ public class FeatureFilter
 			{
 				this.processedInstances = instances;
 			}
+			
+			for (int i = 0; i < k; i++)
+			{
+				this.stringRanking += processedInstances.attribute(i).name() + " ";
+			}
 		}
 		catch (Exception ex)
 		{
@@ -96,5 +102,10 @@ public class FeatureFilter
 	public Ranker getRanker()
 	{
 		return this.searchRanker;
+	}
+	
+	public String getTopResults()
+	{
+		return this.stringRanking;
 	}
 }
