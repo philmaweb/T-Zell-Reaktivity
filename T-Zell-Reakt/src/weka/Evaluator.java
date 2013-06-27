@@ -2,7 +2,7 @@ package weka;
 
 import java.text.DecimalFormat;
 
-import weka.classifiers.functions.SMO;
+import weka.classifiers.Classifier;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -16,7 +16,7 @@ public class Evaluator
 	private int fP = 0;
 	private int fN = 0;
 	
-	public void classifyDataSet(SMO sMO, Instances dataSet)
+	public void classifyDataSet(Classifier sMO, Instances dataSet)
 	{
 		for (int i = 0; i < dataSet.numInstances(); i++)
 		{
@@ -57,7 +57,7 @@ public class Evaluator
 		DecimalFormat dcf = new DecimalFormat();
 		dcf.applyPattern("0.000");
 		
-		System.out.println("<---- Statistik ---->");
+		System.out.println("\n<---- Statistik ---->");
 		System.out.println("TP: " + tP + ", TN: " + tN + ", FP: " + fP + ", FN: " + fN);
 		System.out.println("ACC: " + dcf.format(getACC()));
 		System.out.println("PPV: " + dcf.format(getPPV()));
@@ -65,6 +65,7 @@ public class Evaluator
 		System.out.println("FDR: " + dcf.format(getFDR()));
 		System.out.println("SPC: " + dcf.format(getSPC()));
 		System.out.println("MCC: " + dcf.format(getMCC()));
+		System.out.println("");
 	}
 	
 	public double getACC()
