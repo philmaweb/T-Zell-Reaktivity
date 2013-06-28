@@ -52,20 +52,23 @@ public class Evaluator
 		}
 	}
 	
-	public void printRawData()
+	public String printRawData()
 	{
 		DecimalFormat dcf = new DecimalFormat();
 		dcf.applyPattern("0.000");
 		
-		System.out.println("\n<---- Statistik ---->");
-		System.out.println("TP: " + tP + ", TN: " + tN + ", FP: " + fP + ", FN: " + fN);
-		System.out.println("ACC: " + dcf.format(getACC()));
-		System.out.println("PPV: " + dcf.format(getPPV()));
-		System.out.println("NPV: " + dcf.format(getNPV()));
-		System.out.println("FDR: " + dcf.format(getFDR()));
-		System.out.println("SPC: " + dcf.format(getSPC()));
-		System.out.println("MCC: " + dcf.format(getMCC()));
-		System.out.println("");
+		String result = "";
+		result += ("\n<---- Statistik ---->\n");
+		result += ("TP: " + tP + ", TN: " + tN + ", FP: " + fP + ", FN: " + fN + "\n");
+		result += ("ACC: " + dcf.format(getACC()) + "\n");
+		result += ("PPV: " + dcf.format(getPPV()) + "\n");
+		result += ("NPV: " + dcf.format(getNPV()) + "\n");
+		result += ("FDR: " + dcf.format(getFDR()) + "\n");
+		result += ("SPC: " + dcf.format(getSPC()) + "\n");
+		result += ("MCC: " + dcf.format(getMCC()) + "\n");
+		result += ("\n");
+		
+		return result;
 	}
 	
 	public double getACC()

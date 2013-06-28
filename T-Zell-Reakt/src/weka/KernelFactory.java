@@ -11,8 +11,14 @@ public class KernelFactory
 	{
 		switch (kernelType)
 		{
-			case RBF_KERNEL:	
-				return new RBFKernel();
+			case RBF_KERNEL:
+			{
+				RBFKernel kernel = new RBFKernel();
+				kernel.setCacheSize(0);
+				kernel.setDebug(false);
+				kernel.setChecksTurnedOff(false);
+				return kernel;
+			}
 				
 			case POLY_KERNEL:
 				return new PolyKernel();

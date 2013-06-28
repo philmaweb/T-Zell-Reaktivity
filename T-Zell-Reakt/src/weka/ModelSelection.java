@@ -19,6 +19,7 @@ public class ModelSelection
 			
 			if (tempACC >= bestACC)
 			{
+				bestACC = tempACC;
 				this.bestClassifier = mCollect.bestClassifiers.get(i);
 				this.bestEvaluator = mCollect.evalsOfBestClassifiers.get(i);
 				this.bestNumberOfAttributes = mCollect.listOfNumberOfAttributes.get(i);

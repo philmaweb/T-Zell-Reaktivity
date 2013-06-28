@@ -1,6 +1,8 @@
 package starting;
 
 import io.ExampleReader;
+import io.StatisticOutput;
+
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import weka.ModelCollection;
 import weka.ModelSelection;
 import weka.ParameterOptimization;
 import weka.SupportVectorMachine;
-import weka.classifiers.Classifier;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.Kernel;
 import weka.classifiers.meta.GridSearch;
@@ -41,7 +42,8 @@ public class Training
 	{
 		// Konfiguration
 		Training training = new Training();
-		int numberOfMaxAttributes = 9*9;
+		int numberOfMaxAttributes = 9*3;
+		StatisticOutput statisticWriter = new StatisticOutput("data/statistics.txt");
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
 		
@@ -49,7 +51,7 @@ public class Training
 		// Lies die EncodingDB ein
 		AAEncodingFileReader aa = new AAEncodingFileReader();
 		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings_complete.txt");
-		training.printMessage("Es wurden " + db.getEncodingDatabase().size() + " Codierunge einglesen");
+		training.printMessage("Es wurden " + db.getEncodingDatabase().size() + " Codierungen einglesen");
 		
 		training.printMessage("Trainingsdatensatz wird eingelesen und prozessiert");
 		// Lies zunächst die gesamten Trainingsdaten ein
@@ -71,6 +73,9 @@ public class Training
 		 */
 		for (int outer_run = 0; outer_run < 5; outer_run++)
 		{
+			statisticWriter.writeString("===== Äußere Evaluation " + outer_run + "/5 =====\n\n");
+			
+			
 			ArrayList<ArrayList<String>> list_positives = new ArrayList<ArrayList<String>>();
 			list_positives.addAll(complete_list_positiv);
 			
@@ -98,6 +103,7 @@ public class Training
 			 */
 			for (int numberOfAttributes = 9; numberOfAttributes <= numberOfMaxAttributes; numberOfAttributes += 9)
 			{
+				statisticWriter.writeString("----- Evaluation mit " + numberOfAttributes + "/" + numberOfMaxAttributes + " Attributen -----\n");
 				/*
 				 * 
 				 * Ab hier nur noch Arbeiten mit innerer Liste, die Daten zum Evaluieren bekommt Weka vorerst 
@@ -126,11 +132,13 @@ public class Training
 				SMO sMO = svm.createSMO(kernel, dataSet);
 				
 				ParameterOptimization optimizer = new ParameterOptimization();
-				GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet);
+				String logFileName = outer_run + "_" + numberOfAttributes;
+				GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet, logFileName);
 				training.printMessage("Gefundene Parameter [C, gamma]: " + gridSearch.getValues()); // liefert unter diesen Settings 1.0 und 0.0
 				Point2D bestParameters = (Point2D)gridSearch.getValues();							// speichert die besten Werte der GridSearch
 	
 				// setze die Parameter des Kernels und der SVM anhand der optimalen aus der GridSearch
+				
 				String[] kernelParameter = kernel.getOptions();
 				kernelParameter[3] = String.valueOf(Math.pow(10, bestParameters.getY()));
 				try 
@@ -181,7 +189,7 @@ public class Training
 				training.printMessage("Ermittle Performance");
 				Evaluator eval = new Evaluator();
 				eval.classifyDataSet(sMO, dataSet);
-				eval.printRawData();
+				training.printMessage(eval.printRawData());
 				
 				/*
 				 * Füge das Modell und die externe Evaulation zur Sammlung hinzu
@@ -190,6 +198,9 @@ public class Training
 				modelCollection.evalsOfBestClassifiers.add(eval);
 				modelCollection.listOfNumberOfAttributes.add(numberOfAttributes);
 				modelCollection.listOfFeatureFilters.add(featureFilter);
+				
+				statisticWriter.writeString("Verwendete Attribute: " + featureFilter.getTopResults());
+				statisticWriter.writeString(eval.printRawData());
 			}
 		}
 		
@@ -198,7 +209,7 @@ public class Training
 		ModelSelection modelSelection = new ModelSelection();
 		modelSelection.calculateBestModel(modelCollection);
 		
-		modelSelection.getBestEvaluator().printRawData();
+		training.printMessage(modelSelection.getBestEvaluator().printRawData());
 	}
 	
 	private ArrayList<String> concatenateLists(ArrayList<ArrayList<String>> list)
