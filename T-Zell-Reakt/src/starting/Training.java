@@ -209,7 +209,18 @@ public class Training
 		ModelSelection modelSelection = new ModelSelection();
 		modelSelection.calculateBestModel(modelCollection);
 		
+		training.printMessage("Das beste Model: ");
 		training.printMessage(modelSelection.getBestEvaluator().printRawData());
+		System.out.println("--- SMO ---");
+		for (int i = 0; i < modelSelection.getBestClassifier().getOptions().length; i++)
+		{
+			System.out.print(modelSelection.getBestClassifier().getOptions()[i] + " ");
+		}
+		System.out.println("--- Features ---");
+		System.out.println(modelSelection.getBestListOfFeatures().getTopResults());
+		
+		
+
 	}
 	
 	private ArrayList<String> concatenateLists(ArrayList<ArrayList<String>> list)
