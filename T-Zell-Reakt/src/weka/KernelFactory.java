@@ -14,8 +14,6 @@ public class KernelFactory
 			case RBF_KERNEL:
 			{
 				RBFKernel kernel = new RBFKernel();
-				kernel.setCacheSize(0);
-				kernel.setDebug(false);
 				return kernel;
 			}
 				

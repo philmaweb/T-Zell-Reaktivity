@@ -35,14 +35,11 @@ public class Training
 	 * Einstiegspunkt zum Trainieren der SVM
 	 * @param args
 	 */
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) 
 	{
 		// Konfiguration
 		Training training = new Training();
-		int numberOfMaxAttributes = 450;
+		int numberOfAttributes = 9;
 		StatisticOutput statisticWriter = new StatisticOutput("data/statistics.txt");
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
@@ -67,6 +64,27 @@ public class Training
 		// Lege Listen für die besten Klassifizierer und deren Evaluation an
 		ModelCollection modelCollection = new ModelCollection();
 		
+		/*
+		 * 
+		 * Beginne Feature Selection
+		 * 
+		 */
+		ArrayList<String> positivesForFeatureSelection = training.concatenateLists(complete_list_positiv);
+		ArrayList<String> negativesForFeatureSelection = training.concatenateLists(complete_list_negativ);
+		
+		training.printMessage("Convertiere Daten ins Weka ARFF Format");		
+		// Convertiere Daten in Wekas File Format
+		ARFFFileGenerator arff = new ARFFFileGenerator();
+		Instances dataSet = arff.createARFFFile(positivesForFeatureSelection, negativesForFeatureSelection, db.getEncodingDatabase());
+		dataSet.setClass(dataSet.attribute("activator"));			// Lege das nominale Attribut fest, wonach klassifiziert wird
+		dataSet.deleteStringAttributes(); 							// Entferne String-Attribute
+		
+		training.printMessage("Führe Feature Selection (Filtering) aus");
+		// Beginne Feature Selection
+		FeatureFilter featureFilter = new FeatureFilter();
+		featureFilter.rankFeatures(dataSet, numberOfAttributes);					// Wähle die x wichtigsten Features aus
+		dataSet = featureFilter.getProcessedInstances();
+		training.printMessage("Ausgewählte Features: " + featureFilter.getTopResults());
 
 		/*
 		 * Führe die äußere Evaluierung fünfmal durch und wähle das beste Modell
@@ -95,114 +113,73 @@ public class Training
 			ArrayList<String> inner_List_pos = training.concatenateLists(list_positives);
 			ArrayList<String> inner_List_neg = training.concatenateLists(list_negatives);
 				
+
 			/*
 			 * 
-			 * Ermittle den Einfluss der Attributanzahl
-			 * 
+			 * Ab hier nur noch Arbeiten mit innerer Liste, die Daten zum Evaluieren bekommt Weka vorerst 
+			 * nicht zu sehen!
 			 * 
 			 */
-			for (int numberOfAttributes = 5; numberOfAttributes <= numberOfMaxAttributes; numberOfAttributes *= 9)
-			{
-				statisticWriter.writeString("----- Evaluation mit " + numberOfAttributes + "/" + numberOfMaxAttributes + " Attributen -----\n");
-				/*
-				 * 
-				 * Ab hier nur noch Arbeiten mit innerer Liste, die Daten zum Evaluieren bekommt Weka vorerst 
-				 * nicht zu sehen!
-				 * 
-				 */
-				training.printMessage("Convertiere Daten ins Weka ARFF Format");		
-				// Convertiere Daten in Wekas File Format
-				ARFFFileGenerator arff = new ARFFFileGenerator();
-				Instances dataSet = arff.createARFFFile(inner_List_pos, inner_List_neg, db.getEncodingDatabase());
-				dataSet.setClass(dataSet.attribute("activator"));			// Lege das nominale Attribut fest, wonach klassifiziert wird
-				dataSet.deleteStringAttributes(); 							// Entferne String-Attribute
-				
-				training.printMessage("Führe Feature Selection (Filtering) aus");
-				// Beginne Feature Selection
-				FeatureFilter featureFilter = new FeatureFilter();
-				featureFilter.rankFeatures(dataSet, numberOfAttributes);					// Wähle die x wichtigsten Features aus
-				dataSet = featureFilter.getProcessedInstances();
-				training.printMessage("Ausgewählte Features: " + featureFilter.getTopResults());
-				
-				training.printMessage("Beginne Gridsearch");
-				// Gridsearch starten
-		
-				Kernel kernel = KernelFactory.createKernel(Names.KernelTypes.RBF_KERNEL);
-				SupportVectorMachine svm = new SupportVectorMachine();
-				SMO sMO = svm.createSMO(kernel, dataSet);
-				
-				ParameterOptimization optimizer = new ParameterOptimization();
-				String logFileName = outer_run + "_" + numberOfAttributes;
-				GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet, logFileName);
-				training.printMessage("Gefundene Parameter [C, gamma]: " + gridSearch.getValues()); // liefert unter diesen Settings 1.0 und 0.0
-				Point2D bestParameters = (Point2D)gridSearch.getValues();							// speichert die besten Werte der GridSearch
+			training.printMessage("Convertiere Daten ins Weka ARFF Format");		
+			// Convertiere Daten in Wekas File Format
+			arff = new ARFFFileGenerator();
+			dataSet = arff.createARFFFile(inner_List_pos, inner_List_neg, db.getEncodingDatabase());
+			dataSet.setClass(dataSet.attribute("activator"));			// Lege das nominale Attribut fest, wonach klassifiziert wird
+			dataSet.deleteStringAttributes(); 							// Entferne String-Attribute
+			
+			featureFilter.processInstances(featureFilter.getRanking(), dataSet, numberOfAttributes); // Filtere das innere Datenset nach Vorgabe
+			dataSet = featureFilter.getProcessedInstances();
+			
+			training.printMessage("Beginne Gridsearch");
+			// Gridsearch starten
 	
-				// setze die Parameter des Kernels und der SVM anhand der optimalen aus der GridSearch
-				
-				String[] kernelParameter = kernel.getOptions();
-				//kernelParameter[3] = String.valueOf(Math.round(10000.0 * Math.pow(10, bestParameters.getY()))/10000.0);
-				kernelParameter[3] = String.valueOf(Math.pow(10, bestParameters.getY()));
-				try 
-				{
-					kernel.setOptions(kernelParameter);
-				} 
-				catch (Exception ex) 
-				{
-					System.err.println("Fehler beim Einstellen der Kernelparameter" + ex);
-				}
-	
-				// Setze die Parameter der SVM
-				sMO.setC(bestParameters.getX());
-	
-				// Training der SVM mit gefundenen Parametern beginnen
-				training.printMessage("Beginne die SVM mit den optimalen Einstellungen zu trainieren");
-				try 
-				{
-					sMO.buildClassifier(dataSet);
-				} 
-				catch (Exception e) 
-				{
-					System.err.println("Fehler bei der Erzeugung des Modells: " + e);
-				}
-	
-				//Classifier bestClassifier = gridSearch.getBestClassifier();
-								
-				/*
-				 * 
-				 * Evaluationsbeginn 
-				 *
-				 */
-				training.printMessage("Evaluiere die Performance gegen das äußere Datenset");
-				training.printMessage("Transcodierung des Evaluationsdatensatzes");
-				arff = new ARFFFileGenerator();
-				dataSet = arff.createARFFFile(outer_List_pos, outer_List_neg, db.getEncodingDatabase());
-				dataSet.setClass(dataSet.attribute("activator"));			// Lege das nominale Attribut fest, wonach klassifiziert wird
-				dataSet.deleteStringAttributes(); 							// Entferne String-Attribute
-				
-				// Führe Feature-Filtering mit den Einstellungen der GridSearch aus
-				training.printMessage("Führe Feature Selection (Filtering) auf GridSearch-Basis aus");
-				// Beginne Feature Selection
-				featureFilter.processInstances(featureFilter.getRanking(), dataSet, numberOfAttributes);	 // Wähle die x wichtigsten Features aus
-				dataSet = featureFilter.getProcessedInstances();
-				
-				
-				
-				training.printMessage("Ermittle Performance");
-				Evaluator eval = new Evaluator();
-				eval.classifyDataSet(sMO, dataSet);
-				training.printMessage(eval.printRawData());
-				
-				/*
-				 * Füge das Modell und die externe Evaulation zur Sammlung hinzu
-				 */			
-				modelCollection.bestClassifiers.add(sMO);
-				modelCollection.evalsOfBestClassifiers.add(eval);
-				modelCollection.listOfNumberOfAttributes.add(numberOfAttributes);
-				modelCollection.listOfFeatureFilters.add(featureFilter);
-				
-				statisticWriter.writeString("Verwendete Attribute: " + featureFilter.getTopResults());
-				statisticWriter.writeString(eval.printRawData());
-			}
+			Kernel kernel = KernelFactory.createKernel(Names.KernelTypes.RBF_KERNEL);
+			SupportVectorMachine svm = new SupportVectorMachine();
+			SMO sMO = svm.createSMO(kernel, dataSet);
+			
+			ParameterOptimization optimizer = new ParameterOptimization();
+			String logFileName = outer_run + "_" + numberOfAttributes;
+			GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet, logFileName);
+			training.printMessage("Gefundene Parameter [C, gamma]: " + gridSearch.getValues()); // liefert unter diesen Settings 1.0 und 0.0
+
+			sMO = (SMO)gridSearch.getBestClassifier();
+							
+			/*
+			 * 
+			 * Evaluationsbeginn 
+			 *
+			 */
+			training.printMessage("Evaluiere die Performance gegen das äußere Datenset");
+			training.printMessage("Transcodierung des Evaluationsdatensatzes");
+			arff = new ARFFFileGenerator();
+			dataSet = arff.createARFFFile(outer_List_pos, outer_List_neg, db.getEncodingDatabase());
+			dataSet.setClass(dataSet.attribute("activator"));			// Lege das nominale Attribut fest, wonach klassifiziert wird
+			dataSet.deleteStringAttributes(); 							// Entferne String-Attribute
+			
+			// Führe Feature-Filtering mit den Einstellungen der GridSearch aus
+			training.printMessage("Führe Feature Selection (Filtering) auf GridSearch-Basis aus");
+			// Beginne Feature Selection
+			featureFilter.processInstances(featureFilter.getRanking(), dataSet, numberOfAttributes);	 // Wähle die x wichtigsten Features aus
+			dataSet = featureFilter.getProcessedInstances();
+			
+			
+			
+			training.printMessage("Ermittle Performance");
+			Evaluator eval = new Evaluator();
+			eval.classifyDataSet(sMO, dataSet);
+			training.printMessage(eval.printRawData());
+			
+			/*
+			 * Füge das Modell und die externe Evaulation zur Sammlung hinzu
+			 */			
+			modelCollection.bestClassifiers.add(sMO);
+			modelCollection.evalsOfBestClassifiers.add(eval);
+			modelCollection.listOfNumberOfAttributes.add(numberOfAttributes);
+			modelCollection.listOfFeatureFilters.add(featureFilter);
+			
+			statisticWriter.writeString("Verwendete Attribute: " + featureFilter.getTopResults());
+			statisticWriter.writeString(eval.printRawData());
+			
 		}
 		
 		// Wähle das beste aller Modelle aus
@@ -212,7 +189,7 @@ public class Training
 		
 		training.printMessage("Das beste Model: ");
 		training.printMessage(modelSelection.getBestEvaluator().printRawData());
-		System.out.println("--- SMO ---");
+		System.out.println("------ SMO ------");
 		for (int i = 0; i < modelSelection.getBestClassifier().getOptions().length; i++)
 		{
 			System.out.print(modelSelection.getBestClassifier().getOptions()[i] + " ");

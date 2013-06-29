@@ -15,8 +15,8 @@ public class ParameterOptimization
 {
 	public GridSearch performGridSearch(SMO sMO, Instances dataSet, String logname)
 	{
-		GridSearch gridSearch = new GridSearch();
-
+		
+		GridSearch gridSearch;
 		try
 		{
 			// Erste Greedy Stufe
@@ -27,7 +27,7 @@ public class ParameterOptimization
 			vals[3] = -15;
 			vals[4] = 2;
 			vals[5] = 0.5;
-			gridSearch = setUpGridSearch(sMO, gridSearch, dataSet, logname + ".1", vals);
+			gridSearch = setUpGridSearch(sMO, dataSet, logname + ".1", vals);
 			gridSearch.buildClassifier(dataSet);
 			StatisticOutputProcessor.createProcessedOutput(logname + ".1");
 			
@@ -39,7 +39,7 @@ public class ParameterOptimization
 			vals[3] = Math.round((bestParameters.getY() * 100)/100.) - 0.5;
 			vals[4] = Math.round((bestParameters.getY() * 100)/100.) + 0.5;
 			vals[5] = 0.05;
-			gridSearch = setUpGridSearch(sMO, gridSearch, dataSet, logname + ".2", vals);
+			gridSearch = setUpGridSearch(sMO, dataSet, logname + ".2", vals);
 			gridSearch.buildClassifier(dataSet);
 			StatisticOutputProcessor.createProcessedOutput(logname + ".2");
 			
@@ -51,17 +51,18 @@ public class ParameterOptimization
 			vals[3] = Math.round((bestParameters.getY() * 100)/100.) - 0.05;
 			vals[4] = Math.round((bestParameters.getY() * 100)/100.) + 0.05;
 			vals[5] = 0.005;
-			gridSearch = setUpGridSearch(sMO, gridSearch, dataSet, logname + ".3", vals);
+			gridSearch = setUpGridSearch(sMO, dataSet, logname + ".3", vals);
 			gridSearch.buildClassifier(dataSet);
 			StatisticOutputProcessor.createProcessedOutput(logname + ".3");
 			
+			return gridSearch;
 		}
 		catch (Exception ex)
 		{
 			System.err.println("Fehler bei der Durchführung der GridSearch!\n" + ex);
 		}
 		
-		return gridSearch;
+		return null;
 	}
 	
 	/**
@@ -73,8 +74,10 @@ public class ParameterOptimization
 	 * @param vals 0: XMin, 1: XMax, 2: XStep, 3: YMin, 4: YMax, 5: YStep
 	 * @return
 	 */
-	private GridSearch setUpGridSearch(SMO sMO, GridSearch gridSearch, Instances dataSet, String logname, double[] vals)
+	private GridSearch setUpGridSearch(SMO sMO, Instances dataSet, String logname, double[] vals)
 	{
+		GridSearch gridSearch = new GridSearch();
+		
 		// setze Parameter für GridSearch
 		gridSearch.setEvaluation(new SelectedTag(GridSearch.EVALUATION_ACC, GridSearch.TAGS_EVALUATION));
 		gridSearch.setGridIsExtendable(true);						// erweitere automatisch das Grid, falls Top-Werte am Rand
