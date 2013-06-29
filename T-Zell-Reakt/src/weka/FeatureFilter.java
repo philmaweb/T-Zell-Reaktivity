@@ -51,6 +51,7 @@ public class FeatureFilter
 	{
 		try
 		{
+			this.stringRanking = "";
 			// insbesondere nicht, wenn k = -1
 			if (k > 0)
 			{		

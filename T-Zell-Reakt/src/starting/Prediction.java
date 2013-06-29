@@ -60,7 +60,7 @@ public class Prediction {
 			// FeatureFilter aufbauen
 			pred.printMessage("Filtere die Features nach Vorgabe");
 			FeatureFilter featureFilter = new FeatureFilter();
-			featureFilter.processInstances(iRanking, dataSet, 10);
+			featureFilter.processInstances(iRanking, dataSet, 9);
 			pred.printMessage("Ausgewählte Features: " + featureFilter.getTopResults());
 			dataSet = featureFilter.getProcessedInstances();
 			

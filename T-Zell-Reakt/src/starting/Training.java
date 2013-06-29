@@ -3,23 +3,17 @@ package starting;
 import io.ExampleReader;
 import io.StatisticOutput;
 
-
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Date;
 
-import configuration.Names;
 
 import weka.ARFFFileGenerator;
 import weka.Evaluator;
 import weka.FeatureFilter;
-import weka.KernelFactory;
 import weka.ModelCollection;
 import weka.ModelSelection;
 import weka.ParameterOptimization;
-import weka.SupportVectorMachine;
 import weka.classifiers.functions.SMO;
-import weka.classifiers.functions.supportVector.Kernel;
 import weka.classifiers.meta.GridSearch;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
