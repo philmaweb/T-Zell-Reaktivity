@@ -24,7 +24,6 @@ public class SupportVectorMachine
 		sMO.setC(c);
 		sMO.setEpsilon(epsilon);
 		sMO.setFilterType(new SelectedTag(SMO.FILTER_NONE, SMO.TAGS_FILTER));
-		sMO.setChecksTurnedOff(true);
 
 		
 		try 
