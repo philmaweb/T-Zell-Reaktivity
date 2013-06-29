@@ -34,7 +34,7 @@ public class Training
 	{
 		// Konfiguration
 		Training training = new Training();
-		int numberOfAttributes = 9;
+		int numberOfAttributes = 81;
 		StatisticOutput statisticWriter = new StatisticOutput("data/statistics.txt");
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
@@ -197,6 +197,7 @@ public class Training
 		{
 			SerializationHelper.write("data/bestPredictor.model", modelSelection.getBestClassifier());
 			SerializationHelper.write("data/ranking.filter", modelSelection.getBestListOfFeatures().getRanking());
+			SerializationHelper.write("data/components.i", modelSelection.getBestListOfFeatures().getRanking());
 		}
 		catch (Exception ex)
 		{

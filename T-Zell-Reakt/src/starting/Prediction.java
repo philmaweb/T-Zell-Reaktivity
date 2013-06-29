@@ -33,6 +33,7 @@ public class Prediction {
 		{
 			Classifier bestClassifier = (Classifier) SerializationHelper.read("data/bestPredictor.model");
 			int[] iRanking = (int[]) SerializationHelper.read("data/ranking.filter");
+			int iAttributes = (int) SerializationHelper.read("data/components.i");
 			
 			
 			// Lies die EncodingDB ein
@@ -60,7 +61,7 @@ public class Prediction {
 			// FeatureFilter aufbauen
 			pred.printMessage("Filtere die Features nach Vorgabe");
 			FeatureFilter featureFilter = new FeatureFilter();
-			featureFilter.processInstances(iRanking, dataSet, 9);
+			featureFilter.processInstances(iRanking, dataSet, iAttributes);
 			pred.printMessage("Ausgewählte Features: " + featureFilter.getTopResults());
 			dataSet = featureFilter.getProcessedInstances();
 			

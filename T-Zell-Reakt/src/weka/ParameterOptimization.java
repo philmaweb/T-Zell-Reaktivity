@@ -76,7 +76,7 @@ public class ParameterOptimization
 		
 		// setze Parameter für GridSearch
 		gridSearch.setEvaluation(new SelectedTag(GridSearch.EVALUATION_ACC, GridSearch.TAGS_EVALUATION));
-		gridSearch.setGridIsExtendable(true);						// erweitere automatisch das Grid, falls Top-Werte am Rand
+		gridSearch.setGridIsExtendable(false);						// erweitere automatisch das Grid, falls Top-Werte am Rand, wirft nur Fehler
 		gridSearch.setFilter(new AllFilter());						// Filtere hier nichts mehr, da Featureselection zuvor ausgeführt wurde
 		gridSearch.setClassifier(sMO);
 		gridSearch.setXProperty("classifier.c");

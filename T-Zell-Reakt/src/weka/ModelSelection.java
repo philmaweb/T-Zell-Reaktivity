@@ -27,6 +27,28 @@ public class ModelSelection
 			}
 		}
 	}
+	
+	
+
+	public void setBestClassifier(Classifier bestClassifier) 
+	{
+		this.bestClassifier = bestClassifier;
+	}
+
+	public void setBestEvaluator(Evaluator bestEvaluator) 
+	{
+		this.bestEvaluator = bestEvaluator;
+	}
+
+	public void setBestNumberOfAttributes(int bestNumberOfAttributes) 
+	{
+		this.bestNumberOfAttributes = bestNumberOfAttributes;
+	}
+
+	public void setBestListOfFeatures(FeatureFilter bestListOfFeatures) 
+	{
+		this.bestListOfFeatures = bestListOfFeatures;
+	}
 
 	public Classifier getBestClassifier() 
 	{
