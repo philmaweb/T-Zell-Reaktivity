@@ -5,7 +5,10 @@ import io.StatisticOutputProcessor;
 import java.awt.geom.Point2D;
 import java.io.File;
 
+import configuration.Names;
+
 import weka.classifiers.functions.SMO;
+import weka.classifiers.functions.supportVector.Kernel;
 import weka.classifiers.meta.GridSearch;
 import weka.core.Instances;
 import weka.core.SelectedTag;
@@ -13,7 +16,7 @@ import weka.filters.AllFilter;
 
 public class ParameterOptimization 
 {
-	public GridSearch performGridSearch(SMO sMO, Instances dataSet, String logname)
+	public GridSearch performGridSearch(Instances dataSet, String logname)
 	{
 		
 		GridSearch gridSearch;
@@ -27,7 +30,7 @@ public class ParameterOptimization
 			vals[3] = -15;
 			vals[4] = 2;
 			vals[5] = 0.5;
-			gridSearch = setUpGridSearch(sMO, dataSet, logname + ".1", vals);
+			gridSearch = setUpGridSearch(dataSet, logname + ".1", vals);
 			gridSearch.buildClassifier(dataSet);
 			StatisticOutputProcessor.createProcessedOutput(logname + ".1");
 			
@@ -39,7 +42,7 @@ public class ParameterOptimization
 			vals[3] = Math.round((bestParameters.getY() * 100)/100.) - 0.5;
 			vals[4] = Math.round((bestParameters.getY() * 100)/100.) + 0.5;
 			vals[5] = 0.05;
-			gridSearch = setUpGridSearch(sMO, dataSet, logname + ".2", vals);
+			gridSearch = setUpGridSearch(dataSet, logname + ".2", vals);
 			gridSearch.buildClassifier(dataSet);
 			StatisticOutputProcessor.createProcessedOutput(logname + ".2");
 			
@@ -51,7 +54,7 @@ public class ParameterOptimization
 			vals[3] = Math.round((bestParameters.getY() * 100)/100.) - 0.05;
 			vals[4] = Math.round((bestParameters.getY() * 100)/100.) + 0.05;
 			vals[5] = 0.005;
-			gridSearch = setUpGridSearch(sMO, dataSet, logname + ".3", vals);
+			gridSearch = setUpGridSearch(dataSet, logname + ".3", vals);
 			gridSearch.buildClassifier(dataSet);
 			StatisticOutputProcessor.createProcessedOutput(logname + ".3");
 			
@@ -74,9 +77,13 @@ public class ParameterOptimization
 	 * @param vals 0: XMin, 1: XMax, 2: XStep, 3: YMin, 4: YMax, 5: YStep
 	 * @return
 	 */
-	private GridSearch setUpGridSearch(SMO sMO, Instances dataSet, String logname, double[] vals)
+	private GridSearch setUpGridSearch(Instances dataSet, String logname, double[] vals)
 	{
 		GridSearch gridSearch = new GridSearch();
+		
+		Kernel kernel = KernelFactory.createKernel(Names.KernelTypes.RBF_KERNEL);
+		SupportVectorMachine svm = new SupportVectorMachine();
+		SMO sMO = svm.createSMO(kernel, dataSet);
 		
 		// setze Parameter für GridSearch
 		gridSearch.setEvaluation(new SelectedTag(GridSearch.EVALUATION_ACC, GridSearch.TAGS_EVALUATION));

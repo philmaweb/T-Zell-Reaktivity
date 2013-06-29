@@ -133,16 +133,14 @@ public class Training
 			training.printMessage("Beginne Gridsearch");
 			// Gridsearch starten
 	
-			Kernel kernel = KernelFactory.createKernel(Names.KernelTypes.RBF_KERNEL);
-			SupportVectorMachine svm = new SupportVectorMachine();
-			SMO sMO = svm.createSMO(kernel, dataSet);
+			
 			
 			ParameterOptimization optimizer = new ParameterOptimization();
 			String logFileName = outer_run + "_" + numberOfAttributes;
-			GridSearch gridSearch = optimizer.performGridSearch(sMO, dataSet, logFileName);
+			GridSearch gridSearch = optimizer.performGridSearch(dataSet, logFileName);
 			training.printMessage("Gefundene Parameter [C, gamma]: " + gridSearch.getValues()); // liefert unter diesen Settings 1.0 und 0.0
 
-			sMO = (SMO)gridSearch.getBestClassifier();
+			SMO sMO = (SMO)gridSearch.getBestClassifier();
 							
 			/*
 			 * 
