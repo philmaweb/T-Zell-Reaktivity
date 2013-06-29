@@ -89,7 +89,7 @@ public class FeatureFilter
 			System.err.println(ex);
 		}
 	}
-	
+		
 	public InfoGainAttributeEval getInfoGain ()
 	{
 		return this.infoGainAttributeEval;

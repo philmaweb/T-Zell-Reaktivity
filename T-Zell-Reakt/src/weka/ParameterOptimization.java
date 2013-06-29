@@ -30,33 +30,22 @@ public class ParameterOptimization
 			vals[3] = -15;
 			vals[4] = 1;
 			vals[5] = 0.5;
-			gridSearch = setUpGridSearch(dataSet, logname + ".1", vals);
+			gridSearch = setUpGridSearch(dataSet, logname + ".0", vals);
 			gridSearch.buildClassifier(dataSet);
-			StatisticOutputProcessor.createProcessedOutput(logname + ".1");
+			StatisticOutputProcessor.createProcessedOutput(logname + ".0");
 			
 			// Zweite Greedy Stufe
 			Point2D bestParameters = (Point2D)gridSearch.getValues();
-			vals[0] = Math.round((bestParameters.getX() * 100))/100. - 0.5;
-			vals[1] = Math.round((bestParameters.getX() * 100))/100. + 0.5;
-			vals[2] = 0.05;
-			vals[3] = Math.round((bestParameters.getY() * 100))/100. - 0.5;
-			vals[4] = Math.round((bestParameters.getY() * 100))/100. + 0.5;
-			vals[5] = 0.05;
-			gridSearch = setUpGridSearch(dataSet, logname + ".2", vals);
+			vals[0] = Math.round((bestParameters.getX() * 100))/100. - 0.25;
+			vals[1] = Math.round((bestParameters.getX() * 100))/100. + 0.25;
+			vals[2] = 0.01;
+			vals[3] = Math.round((bestParameters.getY() * 100))/100. - 0.25;
+			vals[4] = Math.round((bestParameters.getY() * 100))/100. + 0.25;
+			vals[5] = 0.01;
+			gridSearch = setUpGridSearch(dataSet, logname + ".1", vals);
 			gridSearch.buildClassifier(dataSet);
-			StatisticOutputProcessor.createProcessedOutput(logname + ".2");
-			
-			// Dritte Greedy Stufe
-			bestParameters = (Point2D)gridSearch.getValues();
-			vals[0] = Math.round((bestParameters.getX() * 100))/100. - 0.05;
-			vals[1] = Math.round((bestParameters.getX() * 100))/100. + 0.05;
-			vals[2] = 0.005;
-			vals[3] = Math.round((bestParameters.getY() * 100))/100. - 0.05;
-			vals[4] = Math.round((bestParameters.getY() * 100))/100. + 0.05;
-			vals[5] = 0.005;
-			gridSearch = setUpGridSearch(dataSet, logname + ".3", vals);
-			gridSearch.buildClassifier(dataSet);
-			StatisticOutputProcessor.createProcessedOutput(logname + ".3");
+			StatisticOutputProcessor.createProcessedOutput(logname + ".1");
+	
 			
 			return gridSearch;
 		}

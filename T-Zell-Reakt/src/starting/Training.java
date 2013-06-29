@@ -22,6 +22,7 @@ import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.Kernel;
 import weka.classifiers.meta.GridSearch;
 import weka.core.Instances;
+import weka.core.SerializationHelper;
 
 
 import crossValidation.DataSplit;
@@ -179,6 +180,7 @@ public class Training
 			statisticWriter.writeString(eval.printRawData());
 			
 		}
+		statisticWriter.close();
 		
 		// Wähle das beste aller Modelle aus
 		training.printMessage("Ermittle die allgemein besten Einstellungen");
@@ -195,8 +197,17 @@ public class Training
 		System.out.println("--- Features ---");
 		System.out.println(modelSelection.getBestListOfFeatures().getTopResults());
 		
-		
-
+		// Schreibe das Modell in eine Datei
+		training.printMessage("Das beste Modell wird auf Festplatte geschrieben");
+		try
+		{
+			SerializationHelper.write("data/bestPredictor.model", modelSelection.getBestClassifier());
+			SerializationHelper.write("data/ranking.filter", modelSelection.getBestListOfFeatures().getRanking());
+		}
+		catch (Exception ex)
+		{
+			System.err.println("Fehler beim Schreiben des Modells auf Festplatte: " + ex);
+		}
 	}
 	
 	private ArrayList<String> concatenateLists(ArrayList<ArrayList<String>> list)
@@ -214,5 +225,4 @@ public class Training
 		Date date = new Date();
 		System.out.println(date + ": " + string + " ...");
 	}
-
 }
