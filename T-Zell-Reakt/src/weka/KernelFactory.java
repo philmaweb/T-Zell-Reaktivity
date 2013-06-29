@@ -16,7 +16,6 @@ public class KernelFactory
 				RBFKernel kernel = new RBFKernel();
 				kernel.setCacheSize(0);
 				kernel.setDebug(false);
-				kernel.setChecksTurnedOff(true);
 				return kernel;
 			}
 				

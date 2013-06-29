@@ -140,6 +140,7 @@ public class Training
 				// setze die Parameter des Kernels und der SVM anhand der optimalen aus der GridSearch
 				
 				String[] kernelParameter = kernel.getOptions();
+				//kernelParameter[3] = String.valueOf(Math.round(10000.0 * Math.pow(10, bestParameters.getY()))/10000.0);
 				kernelParameter[3] = String.valueOf(Math.pow(10, bestParameters.getY()));
 				try 
 				{
