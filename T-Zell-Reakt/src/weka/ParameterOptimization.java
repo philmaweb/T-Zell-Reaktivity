@@ -28,7 +28,7 @@ public class ParameterOptimization
 			vals[1] = 25;
 			vals[2] = 0.5;
 			vals[3] = -15;
-			vals[4] = 2;
+			vals[4] = 1;
 			vals[5] = 0.5;
 			gridSearch = setUpGridSearch(dataSet, logname + ".1", vals);
 			gridSearch.buildClassifier(dataSet);

@@ -1,2 +1,14 @@
 ===== Äußere Evaluation 0/5 =====
 
+Verwendete Attribute: AA1_8 AA2_36 AA5_10 AA5_17 AA5_21 AA6_13 AA6_27 AA6_32 AA7_5 AA1_8 AA2_36 AA5_10 AA5_17 AA5_21 AA6_13 AA6_27 AA6_32 AA7_5 AA1_8 AA2_36 AA5_10 AA5_17 AA5_21 AA6_13 AA6_27 AA6_32 AA7_5 
+<---- Statistik ---->
+TP: 37, TN: 51, FP: 29, FN: 43
+ACC: 0,550
+PPV: 0,561
+NPV: 0,543
+FDR: 0,439
+SPC: 0,638
+MCC: 0,102
+
+===== Äußere Evaluation 1/5 =====
+
