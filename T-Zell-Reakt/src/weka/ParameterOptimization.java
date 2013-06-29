@@ -36,11 +36,11 @@ public class ParameterOptimization
 			
 			// Zweite Greedy Stufe
 			Point2D bestParameters = (Point2D)gridSearch.getValues();
-			vals[0] = Math.round((bestParameters.getX() * 100)/100.) - 0.5;
-			vals[1] = Math.round((bestParameters.getX() * 100)/100.) + 0.5;
+			vals[0] = Math.round((bestParameters.getX() * 100))/100. - 0.5;
+			vals[1] = Math.round((bestParameters.getX() * 100))/100. + 0.5;
 			vals[2] = 0.05;
-			vals[3] = Math.round((bestParameters.getY() * 100)/100.) - 0.5;
-			vals[4] = Math.round((bestParameters.getY() * 100)/100.) + 0.5;
+			vals[3] = Math.round((bestParameters.getY() * 100))/100. - 0.5;
+			vals[4] = Math.round((bestParameters.getY() * 100))/100. + 0.5;
 			vals[5] = 0.05;
 			gridSearch = setUpGridSearch(dataSet, logname + ".2", vals);
 			gridSearch.buildClassifier(dataSet);
@@ -48,11 +48,11 @@ public class ParameterOptimization
 			
 			// Dritte Greedy Stufe
 			bestParameters = (Point2D)gridSearch.getValues();
-			vals[0] = Math.round((bestParameters.getX() * 100)/100.) - 0.05;
-			vals[1] = Math.round((bestParameters.getX() * 100)/100.) + 0.05;
+			vals[0] = Math.round((bestParameters.getX() * 100))/100. - 0.05;
+			vals[1] = Math.round((bestParameters.getX() * 100))/100. + 0.05;
 			vals[2] = 0.005;
-			vals[3] = Math.round((bestParameters.getY() * 100)/100.) - 0.05;
-			vals[4] = Math.round((bestParameters.getY() * 100)/100.) + 0.05;
+			vals[3] = Math.round((bestParameters.getY() * 100))/100. - 0.05;
+			vals[4] = Math.round((bestParameters.getY() * 100))/100. + 0.05;
 			vals[5] = 0.005;
 			gridSearch = setUpGridSearch(dataSet, logname + ".3", vals);
 			gridSearch.buildClassifier(dataSet);
