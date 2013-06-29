@@ -10,7 +10,7 @@ public class SupportVectorMachine
 	private int numFolds = -1;
 	private int randomSeed = 1;
 	private double toleranceParameter = 0.001;
-	private double c = 0;
+	private double c = 1;
 	private double epsilon = 1.0E-12;
 	
 	public SMO createSMO(Kernel kernel, Instances dataSet)
@@ -24,6 +24,7 @@ public class SupportVectorMachine
 		sMO.setC(c);
 		sMO.setEpsilon(epsilon);
 		sMO.setFilterType(new SelectedTag(SMO.FILTER_NONE, SMO.TAGS_FILTER));
+		sMO.setChecksTurnedOff(true);
 
 		
 		try 

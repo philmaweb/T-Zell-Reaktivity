@@ -42,7 +42,7 @@ public class Training
 	{
 		// Konfiguration
 		Training training = new Training();
-		int numberOfMaxAttributes = 9*3;
+		int numberOfMaxAttributes = 450;
 		StatisticOutput statisticWriter = new StatisticOutput("data/statistics.txt");
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
@@ -50,7 +50,7 @@ public class Training
 		training.printMessage("Datenbank von Aminosäure-Codierungen wird eingelesen");
 		// Lies die EncodingDB ein
 		AAEncodingFileReader aa = new AAEncodingFileReader();
-		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings_complete.txt");
+		AAEncodingDatabase db = aa.readAAEncodings("data/AAEncodings.txt");
 		training.printMessage("Es wurden " + db.getEncodingDatabase().size() + " Codierungen einglesen");
 		
 		training.printMessage("Trainingsdatensatz wird eingelesen und prozessiert");
@@ -101,7 +101,7 @@ public class Training
 			 * 
 			 * 
 			 */
-			for (int numberOfAttributes = 9; numberOfAttributes <= numberOfMaxAttributes; numberOfAttributes += 9)
+			for (int numberOfAttributes = 5; numberOfAttributes <= numberOfMaxAttributes; numberOfAttributes *= 9)
 			{
 				statisticWriter.writeString("----- Evaluation mit " + numberOfAttributes + "/" + numberOfMaxAttributes + " Attributen -----\n");
 				/*
