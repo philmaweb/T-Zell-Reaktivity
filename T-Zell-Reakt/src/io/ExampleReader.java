@@ -18,11 +18,13 @@ public class ExampleReader
 			String currentLine = bufferedReader.readLine();
 			while (currentLine != null)
 			{
-				result.add(currentLine);
+				if (currentLine.trim().length() == 9)
+				{
+					result.add(currentLine.trim().toUpperCase());
+				}
 				currentLine = bufferedReader.readLine();
 			}
 			fileReader.close();
-			
 		}
 		catch (Exception ex)
 		{

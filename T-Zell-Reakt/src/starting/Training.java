@@ -34,7 +34,7 @@ public class Training
 	{
 		// Konfiguration
 		Training training = new Training();
-		int numberOfAttributes = 1;
+		int numberOfAttributes = 4;
 		StatisticOutput statisticWriter = new StatisticOutput("data/statistics.txt");
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
@@ -86,7 +86,7 @@ public class Training
 		 */
 		for (int outer_run = 0; outer_run < 5; outer_run++)
 		{
-			statisticWriter.writeString("===== Äußere Evaluation " + outer_run + "/5 =====\n\n");
+			statisticWriter.writeString("===== Äußere Evaluation " + (outer_run + 1) + "/5 =====\n\n");
 			
 			
 			ArrayList<ArrayList<String>> list_positives = new ArrayList<ArrayList<String>>();

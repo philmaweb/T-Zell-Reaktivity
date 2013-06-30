@@ -49,6 +49,9 @@ public class Prediction {
 			ArrayList<String> peptidesToPredict = exampleReader.getSequnces(args[0]);
 			PredictionWriter predWriter = new PredictionWriter(args[1]);
 			
+			// Lese Files von bekannten Peptiden ein
+			ArrayList<String> positives = exampleReader.getSequnces("data/positive.txt");
+			ArrayList<String> negatives = exampleReader.getSequnces("data/negative.txt");
 			
 			// Convertiere Daten in Wekas File Format
 			pred.printMessage("Daten werd ins Weka ARFF Format konvertiert");
@@ -69,15 +72,27 @@ public class Prediction {
 			// Beginne Vorhersage für jedes Peptid
 			for (int i = 0; i < peptidesToPredict.size(); i++)
 			{
-				Instance inst = dataSet.instance(i);
-				double val = bestClassifier.classifyInstance(inst);
-				if (val == 0.0)
+				// Peptid ein bekanntes positives?
+				if (positives.contains(peptidesToPredict.get(i)))
+				{
+					predWriter.writePeptide(peptidesToPredict.get(i), 1);
+				}
+				else if (negatives.contains(peptidesToPredict.get(i)))
 				{
 					predWriter.writePeptide(peptidesToPredict.get(i), 0);
 				}
-				else
+				else // unbekanntes Peptid, wende Vorhersage an
 				{
-					predWriter.writePeptide(peptidesToPredict.get(i), 1);
+					Instance inst = dataSet.instance(i);
+					double val = bestClassifier.classifyInstance(inst);
+					if (val == 0.0)
+					{
+						predWriter.writePeptide(peptidesToPredict.get(i), 0);
+					}
+					else
+					{
+						predWriter.writePeptide(peptidesToPredict.get(i), 1);
+					}
 				}
 			}
 			predWriter.close();		
