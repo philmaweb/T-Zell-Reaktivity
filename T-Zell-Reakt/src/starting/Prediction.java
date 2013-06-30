@@ -33,7 +33,7 @@ public class Prediction {
 		{
 			Classifier bestClassifier = (Classifier) SerializationHelper.read("data/bestPredictor.model");
 			int[] iRanking = (int[]) SerializationHelper.read("data/ranking.filter");
-			int iAttributes = (int) SerializationHelper.read("data/components.i");
+			int iAttributes = (int)SerializationHelper.read("data/components.i");
 			
 			
 			// Lies die EncodingDB ein
@@ -95,7 +95,8 @@ public class Prediction {
 					}
 				}
 			}
-			predWriter.close();		
+			predWriter.close();	
+			pred.printMessage("Vorgang abgeschlossen");
 		} 
 		catch (Exception e) 
 		{
