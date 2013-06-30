@@ -22,7 +22,7 @@ public class PredictionWriter
 	{
 		try
 		{
-			this.fileWriter.write(peptide + "\t" + iActivator + "\n");
+			this.fileWriter.write(peptide + ", " + iActivator + "\n");
 		}
 		catch (Exception ex)
 		{

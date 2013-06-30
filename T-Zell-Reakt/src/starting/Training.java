@@ -34,7 +34,7 @@ public class Training
 	{
 		// Konfiguration
 		Training training = new Training();
-		int numberOfAttributes = 81;
+		int numberOfAttributes = 1;
 		StatisticOutput statisticWriter = new StatisticOutput("data/statistics.txt");
 		
 		training.printMessage("*** TCR-Predictor: Training ***");
@@ -188,7 +188,7 @@ public class Training
 		{
 			System.out.print(modelSelection.getBestClassifier().getOptions()[i] + " ");
 		}
-		System.out.println("--- Features ---");
+		System.out.println("\n--- Features ---");
 		System.out.println(modelSelection.getBestListOfFeatures().getTopResults());
 		
 		// Schreibe das Modell in eine Datei
